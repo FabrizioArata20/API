@@ -2,6 +2,7 @@
 import 'package:api_mvp/model/user.dart';
 import 'package:api_mvp/presenters/services/crud_service.dart';
 
+
 abstract class UserViewContract {
   void onUsersFetched(List<UserModel> users);
   void onUserCreated(UserModel user);
@@ -60,3 +61,4 @@ class UserPresenter {
     }
   }
 }
+

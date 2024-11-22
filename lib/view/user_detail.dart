@@ -2,6 +2,7 @@ import 'package:api_mvp/model/user.dart';
 import 'package:api_mvp/view/ui/user_form.dart';
 import 'package:flutter/material.dart';
 
+
 class UserDetailView extends StatelessWidget {
   final UserModel user;
   final Function(UserModel) onUpdate;
@@ -18,7 +19,7 @@ class UserDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.owner),
+        title: Text(user.name),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -37,10 +38,10 @@ class UserDetailView extends StatelessWidget {
           children: [
             _buildUserHeader(),
             const SizedBox(height: 24),
-            _buildInfoSection('Memecoin Information', [
-              _buildInfoRow(Icons.person, 'Owner', user.owner),
-              _buildInfoRow(Icons.email, 'Value', '${user.value} ${user.currency}'),
-              _buildInfoRow(Icons.phone, 'Created At', user.createdAt),
+            _buildInfoSection('Bitcoin Information', [
+              _buildInfoRow(Icons.person, 'Name', user.name),
+              _buildInfoRow(Icons.monetization_on, 'Currency', user.currency.toString()),
+              _buildInfoRow(Icons.calendar_today, 'Created At', user.createdAt),
             ]),
           ],
         ),
@@ -61,12 +62,12 @@ class UserDetailView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                user.owner,
+                user.name,
                 style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
               Text(
-                '${user.value} ${user.currency}',
+                'Currency: ${user.currency}',
                 style: TextStyle(fontSize: 16, color: Colors.grey[600]),
               ),
             ],
@@ -133,8 +134,8 @@ class UserDetailView extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Memecoin'),
-        content: const Text('Are you sure you want to delete this memecoin?'),
+        title: const Text('Delete Bitcoin'),
+        content: const Text('Are you sure you want to delete this bitcoin?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),

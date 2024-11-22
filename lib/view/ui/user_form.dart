@@ -1,6 +1,7 @@
 import 'package:api_mvp/model/user.dart';
 import 'package:flutter/material.dart';
 
+
 class EditUserDialog extends StatefulWidget {
   final UserModel? user;
   final Function(UserModel) onUpdate;
@@ -16,26 +17,21 @@ class EditUserDialog extends StatefulWidget {
 }
 
 class _EditUserDialogState extends State<EditUserDialog> {
-  late TextEditingController _ownerController;
-  late TextEditingController _valueController;
+  late TextEditingController _nameController;
   late TextEditingController _currencyController;
   late TextEditingController _avatarController;
 
   @override
   void initState() {
     super.initState();
-    _ownerController = TextEditingController(text: widget.user?.owner ?? '');
-    _valueController =
-        TextEditingController(text: widget.user?.value.toString() ?? '');
-    _currencyController =
-        TextEditingController(text: widget.user?.currency ?? '');
+    _nameController = TextEditingController(text: widget.user?.name ?? '');
+    _currencyController = TextEditingController(text: widget.user?.currency?.toString() ?? '');
     _avatarController = TextEditingController(text: widget.user?.avatar ?? '');
   }
 
   @override
   void dispose() {
-    _ownerController.dispose();
-    _valueController.dispose();
+    _nameController.dispose();
     _currencyController.dispose();
     _avatarController.dispose();
     super.dispose();
@@ -45,13 +41,12 @@ class _EditUserDialogState extends State<EditUserDialog> {
   Widget build(BuildContext context) {
     final isEditing = widget.user != null;
     return AlertDialog(
-      title: Text(isEditing ? 'Edit Memecoin' : 'Create Memecoin'),
+      title: Text(isEditing ? 'Edit Bitcoin' : 'Create Bitcoin'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildTextField(_ownerController, 'Owner'),
-            _buildTextField(_valueController, 'Value'),
+            _buildTextField(_nameController, 'Name'),
             _buildTextField(_currencyController, 'Currency'),
             _buildTextField(_avatarController, 'Avatar URL'),
           ],
@@ -84,20 +79,17 @@ class _EditUserDialogState extends State<EditUserDialog> {
   }
 
   void _saveUser() {
-    final updatedUser = (widget.user ??
-            UserModel(
-                id: '0',
-                createdAt: DateTime.now().toIso8601String(),
-                owner: '',
-                avatar: '',
-                value: 0.0,
-                currency: ''))
-        .copyWith(
-      owner: _ownerController.text,
-      value: double.tryParse(_valueController.text) ?? 0.0,
-      currency: _currencyController.text,
+    // Try to parse currency as int, but keep as string if parsing fails
+    var currencyValue = int.tryParse(_currencyController.text) ?? _currencyController.text;
+    
+    final updatedUser = UserModel(
+      id: widget.user?.id ?? '0',
+      createdAt: widget.user?.createdAt ?? DateTime.now().toIso8601String(),
+      name: _nameController.text,
       avatar: _avatarController.text,
+      currency: currencyValue,
     );
     widget.onUpdate(updatedUser);
   }
 }
+

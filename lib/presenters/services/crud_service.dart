@@ -3,7 +3,7 @@ import 'package:api_mvp/model/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  final String baseUrl = "https://673bd9c496b8dcd5f3f7acf3.mockapi.io/api/v1/criptos/memecoins";
+  final String baseUrl = "https://673bd9c496b8dcd5f3f7acf3.mockapi.io/api/v1/criptos/bitcoin";
 
   Future<List<UserModel>> fetchUsers() async {
     try {
@@ -12,10 +12,10 @@ class UserService {
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((json) => UserModel.fromJson(json)).toList();
       } else {
-        throw Exception("Failed to fetch memecoins: ${response.statusCode}");
+        throw Exception("Failed to fetch bitcoins: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error fetching memecoins: $e");
+      throw Exception("Error fetching bitcoins: $e");
     }
   }
 
@@ -29,10 +29,10 @@ class UserService {
       if (response.statusCode == 201) {
         return UserModel.fromJson(jsonDecode(response.body));
       } else {
-        throw Exception("Failed to create memecoin: ${response.statusCode}");
+        throw Exception("Failed to create bitcoin: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error creating memecoin: $e");
+      throw Exception("Error creating bitcoin: $e");
     }
   }
 
@@ -46,10 +46,10 @@ class UserService {
       if (response.statusCode == 200) {
         return UserModel.fromJson(jsonDecode(response.body));
       } else {
-        throw Exception("Failed to update memecoin: ${response.statusCode}");
+        throw Exception("Failed to update bitcoin: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error updating memecoin: $e");
+      throw Exception("Error updating bitcoin: $e");
     }
   }
 
@@ -57,10 +57,11 @@ class UserService {
     try {
       final response = await http.delete(Uri.parse("$baseUrl/$id"));
       if (response.statusCode != 200) {
-        throw Exception("Failed to delete memecoin: ${response.statusCode}");
+        throw Exception("Failed to delete bitcoin: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error deleting memecoin: $e");
+      throw Exception("Error deleting bitcoin: $e");
     }
   }
 }
+

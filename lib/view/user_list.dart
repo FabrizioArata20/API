@@ -5,6 +5,7 @@ import 'package:api_mvp/view/ui/user_form.dart';
 import 'package:api_mvp/view/user_detail.dart';
 import 'package:flutter/material.dart';
 
+
 class UserListView extends StatefulWidget {
   final UserPresenter presenter;
 
@@ -80,7 +81,7 @@ class _UserListViewState extends State<UserListView> implements UserViewContract
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Memecoin List'),
+        title: const Text('Bitcoin List'),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())

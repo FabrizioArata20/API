@@ -1,6 +1,8 @@
 import 'package:api_mvp/model/user.dart';
 import 'package:flutter/material.dart';
 
+
+
 class UserCard extends StatelessWidget {
   final UserModel user;
   final VoidCallback onTap;
@@ -32,7 +34,7 @@ class UserCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.owner,
+                      user.name,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -40,7 +42,7 @@ class UserCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${user.value} ${user.currency}',
+                      'Currency: ${user.currency.toString()}',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],

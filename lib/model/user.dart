@@ -1,28 +1,30 @@
 class UserModel {
   final String id;
   final String createdAt;
-  final String owner;
+  final String name;
   final String avatar;
-  final double value; 
-  final String currency;
+  final dynamic currency; 
 
   UserModel({
     required this.id,
     required this.createdAt,
-    required this.owner,
+    required this.name,
     required this.avatar,
-    required this.value, 
     required this.currency,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    var currencyValue = json['currency'];
+    if (currencyValue is String) {
+      currencyValue = int.tryParse(currencyValue) ?? currencyValue;
+    }
+
     return UserModel(
       id: json['id'],
       createdAt: json['createdAt'],
-      owner: json['owner'],
+      name: json['name'],
       avatar: json['avatar'],
-      value: double.parse(json['value'].toString()), 
-      currency: json['currency'],
+      currency: currencyValue,
     );
   }
 
@@ -30,9 +32,8 @@ class UserModel {
     return {
       'id': id,
       'createdAt': createdAt,
-      'owner': owner,
+      'name': name,
       'avatar': avatar,
-      'value': value,
       'currency': currency,
     };
   }
@@ -40,19 +41,16 @@ class UserModel {
   UserModel copyWith({
     String? id,
     String? createdAt,
-    String? owner,
+    String? name,
     String? avatar,
-    double? value,
-    String? currency,
+    dynamic currency,
   }) {
     return UserModel(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
-      owner: owner ?? this.owner,
+      name: name ?? this.name,
       avatar: avatar ?? this.avatar,
-      value: value ?? this.value,
       currency: currency ?? this.currency,
     );
   }
 }
-
