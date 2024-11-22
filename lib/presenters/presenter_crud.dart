@@ -2,12 +2,11 @@
 import 'package:api_mvp/model/user.dart';
 import 'package:api_mvp/presenters/services/crud_service.dart';
 
-
 abstract class UserViewContract {
   void onUsersFetched(List<UserModel> users);
   void onUserCreated(UserModel user);
   void onUserUpdated(UserModel user);
-  void onUserDeleted(int id);
+  void onUserDeleted(String id);
   void onError(String error);
 }
 
@@ -43,7 +42,7 @@ class UserPresenter {
     }
   }
 
-  Future<void> updateUser(int id, UserModel user) async {
+  Future<void> updateUser(String id, UserModel user) async {
     try {
       final updatedUser = await _userService.updateUser(id, user);
       _view?.onUserUpdated(updatedUser);
@@ -52,7 +51,7 @@ class UserPresenter {
     }
   }
 
-  Future<void> deleteUser(int id) async {
+  Future<void> deleteUser(String id) async {
     try {
       await _userService.deleteUser(id);
       _view?.onUserDeleted(id);
@@ -61,4 +60,3 @@ class UserPresenter {
     }
   }
 }
-

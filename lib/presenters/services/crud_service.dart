@@ -3,7 +3,7 @@ import 'package:api_mvp/model/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  final String baseUrl = "https://jsonplaceholder.typicode.com/users";
+  final String baseUrl = "https://673bd9c496b8dcd5f3f7acf3.mockapi.io/api/v1/criptos/memecoins";
 
   Future<List<UserModel>> fetchUsers() async {
     try {
@@ -12,10 +12,10 @@ class UserService {
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((json) => UserModel.fromJson(json)).toList();
       } else {
-        throw Exception("Failed to fetch users: ${response.statusCode}");
+        throw Exception("Failed to fetch memecoins: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error fetching users: $e");
+      throw Exception("Error fetching memecoins: $e");
     }
   }
 
@@ -29,14 +29,14 @@ class UserService {
       if (response.statusCode == 201) {
         return UserModel.fromJson(jsonDecode(response.body));
       } else {
-        throw Exception("Failed to create user: ${response.statusCode}");
+        throw Exception("Failed to create memecoin: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error creating user: $e");
+      throw Exception("Error creating memecoin: $e");
     }
   }
 
-  Future<UserModel> updateUser(int id, UserModel user) async {
+  Future<UserModel> updateUser(String id, UserModel user) async {
     try {
       final response = await http.put(
         Uri.parse("$baseUrl/$id"),
@@ -46,21 +46,21 @@ class UserService {
       if (response.statusCode == 200) {
         return UserModel.fromJson(jsonDecode(response.body));
       } else {
-        throw Exception("Failed to update user: ${response.statusCode}");
+        throw Exception("Failed to update memecoin: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error updating user: $e");
+      throw Exception("Error updating memecoin: $e");
     }
   }
 
-  Future<void> deleteUser(int id) async {
+  Future<void> deleteUser(String id) async {
     try {
       final response = await http.delete(Uri.parse("$baseUrl/$id"));
       if (response.statusCode != 200) {
-        throw Exception("Failed to delete user: ${response.statusCode}");
+        throw Exception("Failed to delete memecoin: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Error deleting user: $e");
+      throw Exception("Error deleting memecoin: $e");
     }
   }
 }

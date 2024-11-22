@@ -16,25 +16,28 @@ class EditUserDialog extends StatefulWidget {
 }
 
 class _EditUserDialogState extends State<EditUserDialog> {
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-
-  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _ownerController;
+  late TextEditingController _valueController;
+  late TextEditingController _currencyController;
+  late TextEditingController _avatarController;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.user?.name ?? '');
-    _emailController = TextEditingController(text: widget.user?.email ?? '');
-    _phoneController = TextEditingController(text: widget.user?.phone ?? '');
+    _ownerController = TextEditingController(text: widget.user?.owner ?? '');
+    _valueController =
+        TextEditingController(text: widget.user?.value.toString() ?? '');
+    _currencyController =
+        TextEditingController(text: widget.user?.currency ?? '');
+    _avatarController = TextEditingController(text: widget.user?.avatar ?? '');
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
+    _ownerController.dispose();
+    _valueController.dispose();
+    _currencyController.dispose();
+    _avatarController.dispose();
     super.dispose();
   }
 
@@ -42,92 +45,58 @@ class _EditUserDialogState extends State<EditUserDialog> {
   Widget build(BuildContext context) {
     final isEditing = widget.user != null;
     return AlertDialog(
-      title: Text(isEditing ? 'Edit User' : 'Create User'),
+      title: Text(isEditing ? 'Edit Memecoin' : 'Create Memecoin'),
       content: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildFormField(
-                controller: _nameController,
-                label: 'Name',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-              ),
-              _buildFormField(
-                controller: _emailController,
-                label: 'Email',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an email';
-                  }
-                  
-                  return null;
-                },
-              ),
-              _buildFormField(
-                controller: _phoneController,
-                label: 'Phone',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a phone number';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildTextField(_ownerController, 'Owner'),
+            _buildTextField(_valueController, 'Value'),
+            _buildTextField(_currencyController, 'Currency'),
+            _buildTextField(_avatarController, 'Avatar URL'),
+          ],
         ),
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              _saveUser();
-            }
-          },
+          onPressed: _saveUser,
           child: Text(isEditing ? 'Update' : 'Create'),
         ),
       ],
     );
   }
 
-  Widget _buildFormField({
-    required TextEditingController controller,
-    required String label,
-    required String? Function(String?) validator,
-  }) {
+  Widget _buildTextField(TextEditingController controller, String label) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
+      child: TextField(
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
           border: const OutlineInputBorder(),
         ),
-        validator: validator,
       ),
     );
   }
 
   void _saveUser() {
-    final updatedUser =
-        (widget.user ?? UserModel(id: 0, name: '', email: '', phone: ''))
-            .copyWith(
-      name: _nameController.text,
-      email: _emailController.text,
-      phone: _phoneController.text,
+    final updatedUser = (widget.user ??
+            UserModel(
+                id: '0',
+                createdAt: DateTime.now().toIso8601String(),
+                owner: '',
+                avatar: '',
+                value: 0.0,
+                currency: ''))
+        .copyWith(
+      owner: _ownerController.text,
+      value: double.tryParse(_valueController.text) ?? 0.0,
+      currency: _currencyController.text,
+      avatar: _avatarController.text,
     );
     widget.onUpdate(updatedUser);
   }

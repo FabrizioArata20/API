@@ -24,11 +24,7 @@ class UserCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: Text(
-                  user.name[0].toUpperCase(),
-                  style: const TextStyle(fontSize: 24, color: Colors.white),
-                ),
+                backgroundImage: NetworkImage(user.avatar),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -36,7 +32,7 @@ class UserCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.name,
+                      user.owner,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -44,7 +40,7 @@ class UserCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      user.email,
+                      '${user.value} ${user.currency}',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],

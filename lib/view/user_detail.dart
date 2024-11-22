@@ -18,7 +18,7 @@ class UserDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.name),
+        title: Text(user.owner),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -37,10 +37,10 @@ class UserDetailView extends StatelessWidget {
           children: [
             _buildUserHeader(),
             const SizedBox(height: 24),
-            _buildInfoSection('Personal Information', [
-              _buildInfoRow(Icons.person, 'Name', user.name),
-              _buildInfoRow(Icons.email, 'Email', user.email),
-              _buildInfoRow(Icons.phone, 'Phone', user.phone),
+            _buildInfoSection('Memecoin Information', [
+              _buildInfoRow(Icons.person, 'Owner', user.owner),
+              _buildInfoRow(Icons.email, 'Value', '${user.value} ${user.currency}'),
+              _buildInfoRow(Icons.phone, 'Created At', user.createdAt),
             ]),
           ],
         ),
@@ -53,11 +53,7 @@ class UserDetailView extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 40,
-          backgroundColor: Colors.purple,
-          child: Text(
-            user.name[0].toUpperCase(),
-            style: const TextStyle(fontSize: 36, color: Colors.white),
-          ),
+          backgroundImage: NetworkImage(user.avatar),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -65,13 +61,12 @@ class UserDetailView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                user.name,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                user.owner,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
               Text(
-                user.email,
+                '${user.value} ${user.currency}',
                 style: TextStyle(fontSize: 16, color: Colors.grey[600]),
               ),
             ],
@@ -109,8 +104,7 @@ class UserDetailView extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 4),
                 Text(value, style: const TextStyle(fontSize: 16)),
@@ -139,8 +133,8 @@ class UserDetailView extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete User'),
-        content: const Text('Are you sure you want to delete this user?'),
+        title: const Text('Delete Memecoin'),
+        content: const Text('Are you sure you want to delete this memecoin?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -160,3 +154,4 @@ class UserDetailView extends StatelessWidget {
     );
   }
 }
+

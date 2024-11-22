@@ -36,22 +36,6 @@ class _UserListViewState extends State<UserListView> implements UserViewContract
     await widget.presenter.fetchUsers();
   }
 
-  void _showAlertDialog(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   void onUsersFetched(List<UserModel> users) {
     setState(() {
@@ -65,7 +49,6 @@ class _UserListViewState extends State<UserListView> implements UserViewContract
     setState(() {
       _users.add(user);
     });
-    _showAlertDialog("Éxito", "El usuario ha sido creado correctamente.");
   }
 
   @override
@@ -76,28 +59,28 @@ class _UserListViewState extends State<UserListView> implements UserViewContract
         _users[index] = user;
       }
     });
-    _showAlertDialog("Éxito", "El usuario ha sido actualizado correctamente.");
   }
 
   @override
-  void onUserDeleted(int id) {
+  void onUserDeleted(String id) {
     setState(() {
       _users.removeWhere((user) => user.id == id);
     });
-    _showAlertDialog("Éxito", "El usuario ha sido eliminado correctamente.");
   }
 
   @override
   void onError(String error) {
     setState(() => _isLoading = false);
-    _showAlertDialog("Error", error);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(error)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User List'),
+        title: const Text('Memecoin List'),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -114,7 +97,7 @@ class _UserListViewState extends State<UserListView> implements UserViewContract
               ),
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _showCreateUserDialog,
+        onPressed: () => _showCreateUserDialog(),
         child: const Icon(Icons.add),
       ),
     );
@@ -144,3 +127,4 @@ class _UserListViewState extends State<UserListView> implements UserViewContract
     );
   }
 }
+
